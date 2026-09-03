@@ -15,7 +15,9 @@ function plusEen() {
 }
 
 function minEen() {
-  getal.value--
+  if (getal.value > 0){
+    getal.value--
+  }
 }
 </script>
 
