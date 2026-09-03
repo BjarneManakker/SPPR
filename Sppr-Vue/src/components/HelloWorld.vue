@@ -20,16 +20,8 @@ function minEen() {
 </script>
 
 <template>
-  <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vite.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
-    </h3>
-  </div>
-
   <div class="toevoeging">
+    <h1>Eerste les in Vue.js</h1>
     <h2>Getal: {{ getal }}</h2>
 
     <button @click="plusEen">+1</button>
