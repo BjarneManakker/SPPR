@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1>Tweede les in Vue.js</h1>
+    <h1>Derde les in Vue.js</h1>
   </header>
 </template>
 

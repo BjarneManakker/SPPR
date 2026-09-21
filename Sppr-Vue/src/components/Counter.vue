@@ -1,6 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 
+const props = defineProps({
+  naam: String
+})
+
+const emit = defineEmits(['favorite'])
+
 const getal = ref(0)
 
 function plusEen() {
@@ -12,14 +18,21 @@ function minEen() {
     getal.value--
   }
 }
+
+function favoriet() {
+  emit('favorite', props.naam)
+}
 </script>
 
 <template>
   <div class="toevoeging">
-    <h2>Getal: {{ getal }}</h2>
+    <h2>{{ props.naam }}</h2>
+
+    <h3>Getal: {{ getal }}</h3>
 
     <button @click="plusEen">+1</button>
     <button @click="minEen">-1</button>
+    <button @click="favoriet">Favoriet</button>
   </div>
 </template>
 
@@ -31,6 +44,11 @@ function minEen() {
 
 .toevoeging h2 {
   font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.toevoeging h3 {
+  font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
