@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 const props = defineProps({
-  naam: String
+  naam: String,
 })
 
 const emit = defineEmits(['favorite'])
@@ -25,36 +25,21 @@ function favoriet() {
 </script>
 
 <template>
-  <div class="toevoeging">
-    <h2>{{ props.naam }}</h2>
+  <div class="counter">
+    <h3>{{ props.naam }}</h3>
 
-    <h3>Getal: {{ getal }}</h3>
+    <p class="counter-number">
+      Getal: {{ getal }}
+    </p>
 
-    <button @click="plusEen">+1</button>
-    <button @click="minEen">-1</button>
-    <button @click="favoriet">Favoriet</button>
+    <div class="counter-buttons">
+      <button @click="plusEen">+1</button>
+
+      <button @click="minEen">-1</button>
+
+      <button @click="favoriet">
+        Favoriet
+      </button>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.toevoeging {
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
-
-.toevoeging h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.toevoeging h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.toevoeging button {
-  margin-right: 10px;
-  padding: 8px 16px;
-  cursor: pointer;
-}
-</style>

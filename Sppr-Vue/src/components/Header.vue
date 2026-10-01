@@ -1,13 +1,13 @@
 <template>
-  <header>
-    <h1>Derde les in Vue.js</h1>
+  <header class="site-header">
+    <div class="header-content">
+      <h1>Mijn Vue-applicatie</h1>
+
+      <nav class="navigation">
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/counters">Counters</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+      </nav>
+    </div>
   </header>
 </template>
-
-<style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  margin-bottom: 20px;
-}
-</style>
