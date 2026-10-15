@@ -433,3 +433,411 @@ height: 180px;
     text-align: center;
   }
 }
+
+
+/* =========================
+   GAMES PAGINA
+========================= */
+
+.games-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.games-page h1 {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.form-section {
+  max-width: 650px;
+  margin: 0 auto 40px;
+  padding: 24px;
+  border: 1px solid #d9dee7;
+  border-radius: 12px;
+}
+
+.form-section h2,
+.games-section h2 {
+  margin-top: 0;
+}
+
+.form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-section label {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.form-section input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font: inherit;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-row > div {
+  min-width: 0;
+}
+
+.form-actions,
+.game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.form-actions button,
+.game-actions button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.form-actions button:hover,
+.game-actions button:hover {
+  opacity: 0.88;
+}
+
+.form-actions .cancel-button {
+  background: #64748b;
+}
+
+.game-actions .delete-button {
+  background: #dc2626;
+}
+
+.feedback {
+  margin-bottom: 0;
+  color: #15803d;
+}
+
+.error {
+  color: #dc2626;
+}
+
+/* =========================
+   GAME KAARTEN
+========================= */
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.game-item {
+  min-width: 0;
+}
+
+.game-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #d9dee7;
+  border-radius: 12px;
+  background: white;
+  color: #1f2937;
+}
+
+.game-image {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  background: #f1f5f9;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 170px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.game-content {
+  padding: 16px;
+}
+
+.game-content h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.game-content .rating {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.prices {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.current-price {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.original-price {
+  color: #64748b;
+  text-decoration: line-through;
+}
+
+.game-content .discount {
+  color: #15803d;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+  .games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  .games-grid,
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .games-page {
+    padding: 16px;
+  }
+
+  .form-section {
+    padding: 16px;
+  }
+}
+
+
+
+
+/* Games pagina */
+.games-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.games-page h1 {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.form-section {
+  max-width: 650px;
+  margin: 0 auto 40px;
+  padding: 24px;
+  border: 1px solid #d9dee7;
+  border-radius: 12px;
+}
+
+.form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-section label {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.form-section input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font: inherit;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-row > div {
+  min-width: 0;
+}
+
+.form-actions,
+.game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.form-actions button,
+.game-actions button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.form-actions .cancel-button {
+  background: #64748b;
+}
+
+.game-actions .delete-button {
+  background: #dc2626;
+}
+
+.feedback {
+  color: #15803d;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.game-item {
+  min-width: 0;
+}
+
+.game-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #d9dee7;
+  border-radius: 12px;
+  background: white;
+  color: #1f2937;
+}
+
+.game-image,
+.image-placeholder {
+  width: 100%;
+  height: 170px;
+}
+
+.game-image {
+  display: block;
+  object-fit: cover;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.game-content {
+  padding: 16px;
+}
+
+.game-content h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.game-content .rating {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.prices {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.current-price {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.original-price {
+  color: #64748b;
+  text-decoration: line-through;
+}
+
+.game-content .discount {
+  color: #15803d;
+  font-weight: 600;
+}
+
+@media (max-width: 850px) {
+  .games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  .games-grid,
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* Extra ruimte onder de Games-pagina */
+.games-page {
+  padding-bottom: 80px;
+}
+
+/* Zorg dat de knoppen onder de gamekaarten zichtbaar blijven */
+.game-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.game-item .game-card {
+  flex: 1;
+}
+
+.game-actions {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20px;
+}
+
+/* Geef de footer ruimte en voorkom overlap */
+.games-page + footer,
+footer {
+  position: relative;
+  margin-top: 30px;
+  clear: both;
+}

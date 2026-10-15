@@ -1,30 +1,49 @@
+
 <script setup>
 defineProps({
-  game: Object
+  game: {
+    type: Object,
+    required: true
+  }
 })
 </script>
 
 <template>
-  <article class="game-card">
+  <div class="game-card">
     <img
-      :src="game.thumb"
+      v-if="game.image"
+      :src="game.image"
       :alt="game.title"
-    >
+      class="game-image"
+    />
 
-    <div class="game-card-content">
-      <h2>{{ game.title }}</h2>
-
-      <p>Normale prijs: €{{ game.normalPrice }}</p>
-      <p>Sale prijs: €{{ game.salePrice }}</p>
-      <p>Korting: {{ Math.round(game.savings) }}%</p>
-
-      <a
-        :href="`https://www.cheapshark.com/redirect?dealID=${game.dealID}`"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Bekijk deal
-      </a>
+    <div v-else class="image-placeholder">
+      Geen afbeelding beschikbaar
     </div>
-  </article>
+
+    <div class="game-content">
+      <h3>{{ game.title }}</h3>
+
+      <p v-if="game.steamRatingText" class="rating">
+        {{ game.steamRatingText }}
+      </p>
+
+      <div class="prices">
+        <span class="current-price">
+          €{{ Number(game.Price).toFixed(2) }}
+        </span>
+
+        <span
+          v-if="Number(game.originalPrice) > Number(game.Price)"
+          class="original-price"
+        >
+          €{{ Number(game.originalPrice).toFixed(2) }}
+        </span>
+      </div>
+
+      <p v-if="Number(game.discount) > 0" class="discount">
+        {{ game.discount }}% korting
+      </p>
+    </div>
+  </div>
 </template>
