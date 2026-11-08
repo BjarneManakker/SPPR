@@ -841,3 +841,225 @@ footer {
   margin-top: 30px;
   clear: both;
 }
+
+
+
+/* =========================
+   PROJECT NEXUS
+========================= */
+
+.nexus-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.nexus-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.nexus-header h1 {
+  margin-bottom: 10px;
+}
+
+.nexus-header p {
+  color: #888;
+}
+
+.nexus-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.nexus-count {
+  color: #888;
+  font-size: 14px;
+}
+
+.nexus-page .games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.nexus-game-item {
+  min-width: 0;
+}
+
+.nexus-loading,
+.nexus-empty {
+  text-align: center;
+  padding: 35px;
+  color: #888;
+}
+
+.nexus-error {
+  text-align: center;
+  padding: 25px;
+  color: #dc2626;
+}
+
+.nexus-error button,
+.nexus-refresh {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nexus-refresh {
+  display: block;
+  margin: 30px auto;
+}
+
+.nexus-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 750px) {
+  .nexus-page .games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 500px) {
+  .nexus-page .games-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* Zoek- en filtergedeelte */
+.game-controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 25px 0 15px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.filter-group input,
+.filter-group select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #1f2937;
+  font-size: 14px;
+  outline: none;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: #2563eb;
+}
+
+.result-count {
+  margin: 15px 0 20px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.empty-message {
+  padding: 25px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 25px;
+}
+
+.error-message {
+  color: #dc2626;
+  padding: 15px;
+}
+
+/* Mobiele weergave */
+@media (max-width: 768px) {
+  .game-controls {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .game-controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+.game-card {
+  position: relative;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #f5a623;
+  transition: transform 0.2s;
+}
+
+.favorite-button:hover {
+  transform: scale(1.2);
+}
+
+/* Favorieten filter */
+.favorites-filter {
+  display: flex;
+  justify-content: center;
+}
+
+.favorites-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: #1f2937;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.favorites-label:hover {
+  background: #374151;
+  transform: translateY(-2px);
+}
+
+.favorites-label input {
+  width: 17px;
+  height: 17px;
+  accent-color: #f5a623;
+  cursor: pointer;
+}
+
+.favorites-label:has(input:checked) {
+  background: #f5a623;
+  color: #1f2937;
+}

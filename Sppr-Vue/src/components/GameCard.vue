@@ -1,15 +1,38 @@
-
+```vue
 <script setup>
 defineProps({
   game: {
     type: Object,
     required: true
-  }
+  },
+  isFavorite: {
+    type: Boolean,
+    default: false
+  },
+  showFavorite: {
+  type: Boolean,
+  default: false
+}
+  
 })
+
+const emit = defineEmits(['toggle-favorite'])
 </script>
 
 <template>
   <div class="game-card">
+
+    <!-- Favorietenknop -->
+    <button
+      v-if="showFavorite"
+      type="button"
+      class="favorite-button"
+      @click="emit('toggle-favorite', game.dealID)"
+      :aria-label="isFavorite ? 'Verwijder uit favorieten' : 'Voeg toe aan favorieten'"
+    >
+      {{ isFavorite ? '★' : '☆' }}
+    </button>
+
     <img
       v-if="game.image"
       :src="game.image"
@@ -45,5 +68,7 @@ defineProps({
         {{ game.discount }}% korting
       </p>
     </div>
+
   </div>
 </template>
+```
