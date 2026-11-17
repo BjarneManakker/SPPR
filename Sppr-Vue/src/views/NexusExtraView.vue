@@ -4,29 +4,32 @@ import { ref, onMounted } from 'vue'
 import $ from 'jquery'
 import GameCard from '@/components/GameCard.vue'
 
+// Deze refs bevatten de data en status die Vue aan de template koppelt.
 const games = ref([])
 const loading = ref(true)
 const error = ref('')
 
-// Originele resultaten vanuit de API bewaren
+// Bewaar de volledige API-lijst, zodat iedere filter opnieuw op alle games werkt.
 let allItems = []
 
-// Zoek- en filterinstellingen
+// De template wijzigt deze waarden via v-model; updateResults gebruikt ze als keuzes.
 const search = ref('')
 const maxPrice = ref('all')
 const ratingFilter = ref('all')
 const sorting = ref('default')
 const priceCategory = ref('all')
-// Favorieten
+// Favoriete game-ID's en de keuze om alleen favorieten te tonen.
 const favorites = ref([])
 const showFavoritesOnly = ref(false)
 
-// Games ophalen vanuit n8n
+// Vraag de featured-games op bij n8n en zet de response klaar voor weergave.
 function loadGames() {
+  // Toon de laadstatus en wis een eventuele fout van een vorige aanvraag.
   loading.value = true
   error.value = ''
 
   $.ajax({
+    // De GET-aanvraag start de lokale n8n-webhook voor de featured-games.
     url: 'http://localhost:5678/webhook/games-featured',
     method: 'GET',
     dataType: 'json',
@@ -34,7 +37,8 @@ function loadGames() {
     success: function(data) {
       console.log('API response:', data)
 
-      // Controleren waar de games in de response staan
+      // Ondersteun zowel een directe lijst als een object met een games-lijst.
+      // Een onverwachte response wordt als fout getoond in plaats van als lege lijst.
       if (Array.isArray(data)) {
         allItems = data
       } else if (Array.isArray(data.games)) {
@@ -45,15 +49,17 @@ function loadGames() {
         return
       }
 
-      // Alle resultaten verwerken
+      // Werk de zichtbare lijst bij met de huidige zoek- en filterinstellingen.
       updateResults()
 
+      // Geef de template toestemming om de resultaten of de lege melding te tonen.
       loading.value = false
     },
 
     error: function(xhr, status, message) {
       console.error('API error:', status, message)
 
+      // De foutmelding wordt in de template getoond; de console bevat de technische details.
       error.value = 'Er ging iets mis bij het ophalen van de games.'
       loading.value = false
     }
@@ -62,12 +68,12 @@ function loadGames() {
 }
 
 
-// Zoeken, filteren en sorteren
+// Maak de lijst voor de pagina opnieuw op basis van de opgehaalde data en huidige keuzes.
 function updateResults() {
-  // Kopie maken zodat de originele resultaten behouden blijven
+  // Filter een kopie, zodat sorteren de originele API-volgorde niet blijvend aanpast.
   let items = [...allItems]
 
-  // 1. Zoeken op gametitel
+  // Zoek hoofdletterongevoelig naar de ingevoerde tekst in de gametitel.
   const searchTerm = search.value.toLowerCase().trim()
 
   if (searchTerm !== '') {
@@ -78,7 +84,7 @@ function updateResults() {
     )
   }
 
-  // 2. Filteren op maximale prijs
+  // Beperk de lijst tot games die niet duurder zijn dan het gekozen maximum.
   if (maxPrice.value !== 'all') {
     const priceLimit = Number(maxPrice.value)
 
@@ -87,27 +93,27 @@ function updateResults() {
     )
   }
 
-  // 3. Filteren op Steam-rating
+  // Vergelijk de rating met de gekozen Steam-rating.
   if (ratingFilter.value !== 'all') {
     items = items.filter(game =>
       game.steamRatingText === ratingFilter.value
     )
   }
 
-  // 4. Filteren op prijscategorie
+  // Behoud alleen de gekozen prijscategorie, tenzij alle categorieën zijn geselecteerd.
 if (priceCategory.value !== 'all') {
   items = items.filter(game =>
     game.priceCategory === priceCategory.value
   )
 }
-// Alleen favorieten weergeven
+// Wanneer dit vinkje aanstaat, blijven alleen games met een favoriet-ID over.
 if (showFavoritesOnly.value) {
   items = items.filter(game =>
     favorites.value.includes(game.dealID)
   )
 }
 
-  // 5. Sorteren
+  // Sorteer de gefilterde lijst; standaard blijft de volgorde van de API behouden.
   if (sorting.value === 'price-low') {
     items.sort((a, b) =>
       Number(a.Price) - Number(b.Price)
@@ -122,10 +128,10 @@ if (showFavoritesOnly.value) {
     )
   }
 
-  // Resultaten bijwerken
+  // Deze ref voedt de teller, de lege melding en de kaarten in de template.
   games.value = items
 }
-// Favoriet toevoegen of verwijderen
+// Voeg een ID toe aan favorieten of verwijder het als het al favoriet is.
 function toggleFavorite(id) {
   if (favorites.value.includes(id)) {
     favorites.value = favorites.value.filter(
@@ -137,7 +143,7 @@ function toggleFavorite(id) {
 
   updateResults()
 }
-// Alle filters terugzetten
+// Herstel alle zoek- en filterkeuzes en bereken daarna de volledige resultatenlijst opnieuw.
 function resetFilters() {
   search.value = ''
   maxPrice.value = 'all'
@@ -148,7 +154,7 @@ function resetFilters() {
   updateResults()
 }
 
-// Games ophalen zodra de pagina geopend wordt
+// Start de eerste aanvraag zodra Vue deze pagina heeft gemonteerd.
 onMounted(() => {
   loadGames()
 })
@@ -282,7 +288,7 @@ onMounted(() => {
         Geen games gevonden. Probeer een andere zoekterm of pas je filters aan.
       </p>
 
-      <!-- Games dynamisch weergeven -->
+      <!-- Maak voor elke zichtbare game een kaart en geef favorietstatus en events mee. -->
       <div v-else class="games-grid">
 
         <GameCard
@@ -298,7 +304,7 @@ onMounted(() => {
 
     </section>
 
-    <!-- Vernieuwen -->
+    <!-- Haal de games opnieuw op; tijdens het laden is de knop uitgeschakeld. -->
     <button
       type="button"
       class="refresh-button"
@@ -307,7 +313,7 @@ onMounted(() => {
     >
       {{ loading ? 'Laden...' : 'Vernieuwen' }}
     </button>
-    <!-- Filters resetten -->
+    <!-- Zet zoekterm, filters en sortering terug naar hun beginwaarden. -->
     <button
       type="button"
       class="reset-button"

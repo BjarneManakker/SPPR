@@ -1,0 +1,561 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.cheapshark.com/api/1.0/deals?pageSize=50",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -1552,
+        -720
+      ],
+      "id": "98a0bf4e-ccd5-43f9-b22d-54a0e3a8edd8",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "path": "games",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1760,
+        -720
+      ],
+      "id": "41ab6ef4-4802-4f5f-a707-f981b513f531",
+      "name": "Webhook",
+      "webhookId": "4e0067e8-bff0-4eb8-b514-3f689435ea14"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "30ecf220-24b1-47a9-8b44-5e48cbc4f271",
+              "leftValue": "={{ $json.Price }}",
+              "rightValue": 30,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -1088,
+        -720
+      ],
+      "id": "e6126486-33a8-4f91-8b92-da82f2e318cf",
+      "name": "Onder de €30 filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "50bdeb23-acdf-4154-91d9-7212458a5936",
+              "leftValue": "={{ $json.title }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -864,
+        -720
+      ],
+      "id": "e86b618a-290f-40ca-bf5a-5dfc042ab09c",
+      "name": "Heeft game een Titel"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1016afac-1440-46a0-91dd-6b1de3ac271f",
+              "name": "priceCategory",
+              "value": "={{ Number($json.Price) <= 10 ? 'Budget' : 'Expensive' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -640,
+        -720
+      ],
+      "id": "4e4534ea-7bb6-4340-982e-2dd567fe0978",
+      "name": "Prijs categorysering"
+    },
+    {
+      "parameters": {
+        "path": "games-featured",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1760,
+        -480
+      ],
+      "id": "8c61b163-e9cd-4dbe-9304-46efdacf8695",
+      "name": "webhook2",
+      "webhookId": "964a58ce-f9cb-48e6-9a6a-e28ff5d9418c"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17d2c359-6ac6-42b6-8847-a297a3973b5e",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "58f61267-903c-49b0-8e29-64411c047f82",
+              "name": "Price",
+              "value": "={{ $json.salePrice }}",
+              "type": "number"
+            },
+            {
+              "id": "eaa3104a-7efb-4f6b-be99-064b967decf8",
+              "name": "originalPrice",
+              "value": "={{ $json.normalPrice }}",
+              "type": "number"
+            },
+            {
+              "id": "4f0a81d2-c85b-4111-8a98-e6c3c9cf3ca7",
+              "name": "discount",
+              "value": "={{ $json.savings }}",
+              "type": "number"
+            },
+            {
+              "id": "df22eaf6-a3bc-4e58-b7c3-5678d7ae20a9",
+              "name": "steamRatingText",
+              "value": "={{ $json.steamRatingText }}",
+              "type": "string"
+            },
+            {
+              "id": "093278c8-0a18-491e-9e0d-da8180cd3ca2",
+              "name": "image",
+              "value": "={{ $json.thumb }}",
+              "type": "string"
+            },
+            {
+              "id": "15debd94-2c0c-451c-a447-a3830899d85d",
+              "name": "dealID",
+              "value": "={{ $json.dealID }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -1312,
+        -720
+      ],
+      "id": "25e621a0-5cc6-41eb-8bb8-9b8337eb197e",
+      "name": "Opbouwing van json data die nodig is"
+    },
+    {
+      "parameters": {
+        "url": "https://www.cheapshark.com/api/1.0/deals?pageSize=50",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -1552,
+        -480
+      ],
+      "id": "4d008c04-137e-44ba-a750-1688547ae5e0",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17d2c359-6ac6-42b6-8847-a297a3973b5e",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "58f61267-903c-49b0-8e29-64411c047f82",
+              "name": "Price",
+              "value": "={{ $json.salePrice }}",
+              "type": "number"
+            },
+            {
+              "id": "eaa3104a-7efb-4f6b-be99-064b967decf8",
+              "name": "originalPrice",
+              "value": "={{ $json.normalPrice }}",
+              "type": "number"
+            },
+            {
+              "id": "4f0a81d2-c85b-4111-8a98-e6c3c9cf3ca7",
+              "name": "discount",
+              "value": "={{ $json.savings }}",
+              "type": "number"
+            },
+            {
+              "id": "df22eaf6-a3bc-4e58-b7c3-5678d7ae20a9",
+              "name": "steamRatingText",
+              "value": "={{ $json.steamRatingText }}",
+              "type": "string"
+            },
+            {
+              "id": "093278c8-0a18-491e-9e0d-da8180cd3ca2",
+              "name": "image",
+              "value": "={{ $json.thumb }}",
+              "type": "string"
+            },
+            {
+              "id": "15debd94-2c0c-451c-a447-a3830899d85d",
+              "name": "dealID",
+              "value": "={{ $json.dealID }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -1328,
+        -480
+      ],
+      "id": "d1b5731f-4f62-497f-8119-1490e6953433",
+      "name": "Opbouwing van json data die nodig is1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "30ecf220-24b1-47a9-8b44-5e48cbc4f271",
+              "leftValue": "={{ $json.Price }}",
+              "rightValue": 30,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -1104,
+        -480
+      ],
+      "id": "5c90d819-19cf-4825-80a0-078143e2051e",
+      "name": "Onder de €30 filter1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "50bdeb23-acdf-4154-91d9-7212458a5936",
+              "leftValue": "={{ $json.title }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -880,
+        -480
+      ],
+      "id": "0a6ec8ef-826a-42e8-b661-4c80e2b657e5",
+      "name": "Heeft game een Titel1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1016afac-1440-46a0-91dd-6b1de3ac271f",
+              "name": "priceCategory",
+              "value": "={{ Number($json.Price) <= 10 ? 'Budget' : 'Expensive' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -640,
+        -480
+      ],
+      "id": "c19a617d-1530-453a-9224-659a925a246a",
+      "name": "Prijs categorysering1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b45e19b0-ef82-412e-99bb-ac72fcbf7f8f",
+              "leftValue": "={{ Number($json.Price) }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -416,
+        -480
+      ],
+      "id": "e0ba292f-b2d1-46a3-8b82-6dd560a96e0b",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $input.all().map(item => item.json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -192,
+        -480
+      ],
+      "id": "4e7a7812-ec88-4459-b900-8cb6b05308ca",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Opbouwing van json data die nodig is",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Onder de €30 filter": {
+      "main": [
+        [
+          {
+            "node": "Heeft game een Titel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Heeft game een Titel": {
+      "main": [
+        [
+          {
+            "node": "Prijs categorysering",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Opbouwing van json data die nodig is": {
+      "main": [
+        [
+          {
+            "node": "Onder de €30 filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webhook2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Opbouwing van json data die nodig is1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Opbouwing van json data die nodig is1": {
+      "main": [
+        [
+          {
+            "node": "Onder de €30 filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Onder de €30 filter1": {
+      "main": [
+        [
+          {
+            "node": "Heeft game een Titel1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Heeft game een Titel1": {
+      "main": [
+        [
+          {
+            "node": "Prijs categorysering1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prijs categorysering1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "cef69248-434b-440b-9b2d-06e959f82c6b",
+  "meta": {
+    "instanceId": "0d7d83731f4d512a91b52f4193d681ec358ec4f1440d2a25293c5a30683fd408"
+  },
+  "nodeGroups": [],
+  "id": "BooknjTCBEkE9s9N",
+  "tags": []
+}

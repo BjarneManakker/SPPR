@@ -4,25 +4,29 @@ import { ref, onMounted } from 'vue'
 import $ from 'jquery'
 import GameCard from '@/components/GameCard.vue'
 
+// Deze refs bevatten de gegevens en status die de template op de pagina toont.
+// Als een ref verandert, werkt Vue de gekoppelde HTML automatisch bij.
 const games = ref([])
 const loading = ref(true)
 const error = ref('')
 
-// Originele resultaten vanuit de API bewaren
+// Bewaar de volledige API-lijst apart, zodat filters steeds op alle games werken.
 let allItems = []
 
-// Zoek- en filterinstellingen
+// De v-models in de template lezen en wijzigen deze zoek- en filterwaarden.
 const search = ref('')
 const maxPrice = ref('all')
 const ratingFilter = ref('all')
 const sorting = ref('default')
 
-// Games ophalen vanuit n8n
+// Haal de games op uit de n8n-webhook en verwerk de response voor de pagina.
 function loadGames() {
+  // Toon tijdens het verzoek de laadstatus en wis een eventuele oude foutmelding.
   loading.value = true
   error.value = ''
 
   $.ajax({
+    // De GET-aanvraag vraagt de lijst met games op bij de lokale n8n-workflow.
     url: 'http://localhost:5678/webhook/games',
     method: 'GET',
     dataType: 'json',
@@ -30,7 +34,8 @@ function loadGames() {
     success: function(data) {
       console.log('API response:', data)
 
-      // Controleren waar de games in de response staan
+      // De webhook kan direct een lijst teruggeven of een object met een games-lijst.
+      // Bewaar alleen een geldige lijst; toon anders een duidelijke fout op de pagina.
       if (Array.isArray(data)) {
         allItems = data
       } else if (Array.isArray(data.games)) {
@@ -41,27 +46,29 @@ function loadGames() {
         return
       }
 
-      // Alle resultaten verwerken
+      // Pas de huidige zoek-, filter- en sorteerkeuzes toe op de opgehaalde lijst.
       updateResults()
 
+      // Het verzoek is klaar; Vue kan nu de resultaten of een lege melding tonen.
       loading.value = false
     },
 
     error: function(xhr, status, message) {
       console.error('API error:', status, message)
 
+      // Deze tekst wordt in de template getoond als het ophalen niet lukt.
       error.value = 'Er ging iets mis bij het ophalen van de games.'
       loading.value = false
     }
   })
 }
 
-// Zoeken, filteren en sorteren
+// Bouw de zichtbare lijst opnieuw op wanneer ophalen of een bedieningselement verandert.
 function updateResults() {
-  // Kopie maken zodat de originele resultaten behouden blijven
+  // Werk op een kopie: filteren en sorteren mogen de oorspronkelijke API-lijst niet wijzigen.
   let items = [...allItems]
 
-  // 1. Zoeken op gametitel
+  // Zoek zonder verschil tussen hoofdletters en kleine letters in de gametitel.
   const searchTerm = search.value.toLowerCase().trim()
 
   if (searchTerm !== '') {
@@ -72,7 +79,7 @@ function updateResults() {
     )
   }
 
-  // 2. Filteren op maximale prijs
+  // Houd games over waarvan de prijs niet hoger is dan het gekozen maximum.
   if (maxPrice.value !== 'all') {
     const priceLimit = Number(maxPrice.value)
 
@@ -81,14 +88,14 @@ function updateResults() {
     )
   }
 
-  // 3. Filteren op Steam-rating
+  // Behoud alleen games met de gekozen Steam-rating.
   if (ratingFilter.value !== 'all') {
     items = items.filter(game =>
       game.steamRatingText === ratingFilter.value
     )
   }
 
-  // 4. Sorteren
+  // Sorteer de overgebleven games op prijs of titel; 'default' behoudt de API-volgorde.
   if (sorting.value === 'price-low') {
     items.sort((a, b) =>
       Number(a.Price) - Number(b.Price)
@@ -103,11 +110,11 @@ function updateResults() {
     )
   }
 
-  // Resultaten bijwerken
+  // De template gebruikt deze ref voor de teller, lege melding en gamekaarten.
   games.value = items
 }
 
-// Games ophalen zodra de pagina geopend wordt
+// Start het ophalen zodra Vue deze pagina op het scherm heeft geplaatst.
 onMounted(() => {
   loadGames()
 })
@@ -215,7 +222,7 @@ onMounted(() => {
         Geen games gevonden. Probeer een andere zoekterm of pas je filters aan.
       </p>
 
-      <!-- Games dynamisch weergeven -->
+      <!-- Geef voor elke zichtbare game een GameCard door; de kaart toont de gamegegevens. -->
       <div v-else class="games-grid">
 
         <GameCard
@@ -228,7 +235,7 @@ onMounted(() => {
 
     </section>
 
-    <!-- Vernieuwen -->
+    <!-- Vraag de actuele lijst opnieuw op; voorkom dubbel klikken tijdens het laden. -->
     <button
       type="button"
       class="refresh-button"
